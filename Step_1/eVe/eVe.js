@@ -1,19 +1,10 @@
 /**
 	First Javascript file in web application.
 	check eVe_mode in htmlHead.php 
-	
-	Whenever you change eVe.js you must make the same changes in eVe_tests.js 
-		otherwise your tests might become unreliable.	
-	
-	Differences from eVe.js:
-		Added page section "start: tests - local storage " at the end of this page
-		eVe.installTestModule() is called in eVe.init()
-		Cache is disabled in eVe.ajaxCall()
-		Added: if(eVe.mode = ...) code blocks in many places
+
 		
 */
 
-console.log("First, make sure Ckeditor folder exists under js/libraries.\nThen, fill in form fields and click submit button.\nAfter each submit, you should see the submitted data under the form.");	// R***
 
 let eVe = {};
 eVe.regions = {};
