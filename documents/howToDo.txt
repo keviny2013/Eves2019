@@ -1,0 +1,116 @@
+eVe For Developers
+How To Do List
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+Website will have only 1 structured page (page_first).
+Rest of the transactions will take place through Ajax (or webworkers)
+Cached html will replace website home page
+
+- No PHP or Javascript frameworks. Libraries are ok.
+
+
+-------------------------------------------------------
+
+FLOW of application with example (registration):
+
+1- Front end in 5 steps: 
+	Main file: eVe_tests1.js
+	
+	s1-  Request made
+		User clicks registration form submit button. 
+		On Javascript Window onload, "on submit" is already set to pass the request id to 	eVe.controller1()
+
+
+	s2- eVe.controller1 takes the request id.
+		Figures out other request properties through eVe[request id] = []
+		--- if eVe.mode == 'tests' then starts a testing control
+			
+	s3- Validation
+		eVe.controller1 validates request trhrough tokens and properties in eVe[request id]
+		finds out and gets all form fields and relevant properties.  
+		Since it is a form submit, eVe.controller1() calls eVe_form_validate() and passes 
+		all fields and properties to eVe_form_validate().
+
+		If validation fails: Returns status (and messages if exist) to Controller1. Skip to step 5.
+		Otherwise: calls the right request handler  ( example: eVe.formSubmit()  )
+			
+	s4- Request handler 
+		S4_1: eVe_sendAjax() receives the form properties. Validates send Ajax. 
+		S4_2:  eVe_sendAjax()  converts properties to Json. ( JSON.stringify ) and  sends to webserver
+		S4_6:  Backend response comes as a json string 	
+		--- if eVe.mode == 'test' then assertion is done here
+		S4_10:  Passes the response to eVe_processAjaxResponse1()
+		eVe_processAjaxResponse1() process the request. If exists, shows errors next to 	the 	form fields.
+		Returns status and message to	eVe.controller1() 
+
+	s5- Controller1 gets the response and acts to response
+
+
+2- Back end in 5 steps: 
+	Main files: eVe.php (eVe_tests1.js), securityCheck.php, page_first.php
+	
+	s1-  Request made
+		Ajax request reaches to index.php
+		Run SecurityCheck: 
+		SecurityCheck validates session, user, the request and inputs. Generates $visa.
+		If securityCheck fails ($visa->status) : Go to step 3
+		If securityCheck passes ($visa->status) : Go to step 2. Run request handler. Pass $visa to requestHandler()
+
+	s2- Request handler 
+		eVe_requestHandler() implements eVe_registration()
+		eVe_registration() requires $visa. Generates sql query. Pssses sql query and $visa to database API.
+		database API validates the request and saves the data and returns status,
+		Request handler passes status and messages to index.php
+		
+	s3- index.php gets the response and acts to reponse
+		sends structured response to Ajax request (as json string)
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+3- TESTing
+	Main file: eVe_tests2.js
+
+	We need to generate test scenarios on front end and save test scenarios in a file as json strings. 
+	Then, we can inject 2 tiny testing  interventions on step 2 and step S4_6.
+		$eVe_tests[requestId] = $expectedResult
+	What we need to make this work is:
+	1- Set these properties:
+		$eVe_appMode = true;   // true or false
+		Javascript:  eVe_appMode = true  // true or false
+		$eVe_tests['validIPs'] = array();
+		(PM_IT should be able to change  $eVe_appMode through GUI. )
+	2- Application validates test request:  
+		If $eVe_appMode ==  true and user's role is tester and user's IP is in $eVe_tests['validIPs'] 
+
+	3- Tiny test interventions example:
+		User clicks registration form submit button. 
+		Intervention 1: 
+		In front end flow step 2: Javascript checks if  eVe_appMode is set to true. If set to true, then Javascript gets eVe_testScenarios and sets $eVe_tests[requestId] = $expectedResult
+		Interventions 2:
+		In front end flow step S4_6: Javascript checks if  eVe_appMode is set to true. If set to true, then Javascript compares response against $eVe_tests[requestId] (assertion). Comparison is Json string to Json string because we send Ajax requests as Json string and get responses from server as Json strings.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+4- THEMING
+	Main file: eVe_render.js
+	
+	There will be only 1 page and many requests. 
+	All requests will go through Ajax (or webworker) operation. 
+	Response to each request will include custom templates (if exist) too.
+	Example: 
+		request name: contactUs1
+		relevant files: contactUs1.js, contactUs1.css 
+			Custom templates (if exist) may be in contactUs1.js or contactUs1_render.js  
+		
+----------------------------------------------------------------------------------------------------------------------------------------------------
+		
+5- Navigating through voice command : ?
+
+
+------------------------------------------------------------------------
+	
+	
+
+
+

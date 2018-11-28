@@ -1,0 +1,84 @@
+eVe for developers
+DATABASE API
+
+PHP 7 PDO : MySQL 5.7
+--------------------------------------------------------
+
+
+Permissions system
+
+	PII fields: 	Will be encrypted through PHP
+	(Personally identifiable information fields:  First name, last name, telephone number, email address, userid, etc. )
+
+	highRisk fields: Needs some kind of double encryption
+	 (passwords, sudo credentials, financial credentials, credit card fields, bank account fields, etc.)
+
+	group fields:  Fields (records) that only members of a group can access. 
+
+1- Create mysql table: dbRestrictions  (dependencies: you name the columns if necessary)
+	This table should include insert/select/update/delete restrictions for tables and columns.
+	This table should show which columns include highRisk data or PII data.
+	You figure out this table's structure.
+
+	Default permissions settings must be like this:
+	Even non-registered visitors can read all columns if table is not listed in  dbRestrictions table 
+	Registered users can select, update or delete their own records only.
+	Nobody, even admins, can update (edit) another user's input or data
+	highRisk fields: Nobody, even webadmin, cannot see highRisk fields
+	PII fields: Webadmin can see with limitations or precautions  (Vague, you clarify)
+
+	Possible restrictions:
+		PII fields: Group admin can see group member's PII fields with limitations or precautions  (Vague, you clarify)
+	fields for group members only
+	fields for group admin  only
+		etc.
+
+
+2- Create main API class: mySqlOperations
+	class mySqlOperations(eVe_Visa $eVeVisa,  eVe_query $eVequery);
+
+	You will be given $eVeVisa and $eVequery. 
+	Possible structure of  eVeVisa: 
+		$eVeVisaProperties = $eVeVisa->getProperties = array('user' => , 'request' => array());
+		- User:  groups that user belong to, roles of user for each group
+		- Request: request name, permissions for that request ( which db tables and columns are allowed to be accessed), access type ( insert, update, select,  delete)
+
+	
+	Possible structure of  eVequery: 
+	$eVequery = $eVequery->getProperties = 
+		array('action' => array(), 'tables' => array(), 'columns' => array(), 'where' => ''
+		, 'joins' => '', 'orderby' => '', 'groupby' => '');
+
+
+	References to be used:
+	- Database credentials (username and password) are highRisk data. None of the files or object (even PDO object)
+	should not have final values of username and password. These values should be calculated (decrypted) at runtime.
+	- users table:  eVeusers (dependencies: you name the columns if necessary)
+	- groups: eVegroups  (dependencies: you name the columns if necessary)
+	- roles: eVeroles   (dependencies: you name the columns if necessary)
+	
+
+3- class mySqlOperations methods:
+	validate $eVequery
+		validate $eVequery against $eVeVisa object
+		validate $eVequery against $dbRestrictions table
+		
+	
+	connect to database 
+		if possible: Credentials in $mysqlPDO must be encrypted() 
+			For this purpose: You might need to create a new class by extending PDO class. 
+			class eVePdo extends PDO()
+			
+		$mysqlPDO = new eVePdo()
+
+		
+	generate query (prepared statement)
+	
+	insert
+	update
+	delete
+		if possible: Credentials in $mysqlPDO must be decrypted run time and set back to encrypted value after	
+
+	
+4- Please document all dependencies.
+

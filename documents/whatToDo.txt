@@ -1,0 +1,84 @@
+eVe For Developers
+What To Do List
+-------------------------------------------------------------------------------------------------
+
+Program will not be more comprehensive than below.
+
+1- Registration-login:
+	a.	Basic website registration with email and sms verification through phone number
+	b.	Login: Two step authentication through email 
+	c.	Login: Two step authentication through sms 
+	d.	Edit registration, change password with email and sms verification through phone number
+
+2- Room for voice driven navigation 
+	(This project may not include voice but should be structures accordingly)
+	
+3- Multi language menus and labels:
+	a.	Language selection drop down
+	b.	Multi language menu
+	c.	Multi language labels
+	d.	New language can be added in the future.
+	Non-technical webadmin can do that.
+		-	Export menus and labels in English (csv file)
+		-	Find a translator. Give csv/Excel file to translator.
+		-	Get the translations.  Then upload the translation as csv file.
+
+		
+4- Multi language inputs:
+	a.	Add language property to free text areas. So, user can enter any language and indicates which language it is written in.
+	b.	These inputs would be saved in original language but can be translated to any other language by webadmin as mentioned in ” Multi language menus and labels”
+
+5- Encryption on PII fields
+6- Double encryption on highRisk (high risk) fields (user access credentials (username, password, etc), database access credentials, credit card fields, bank router number, bank account numbers etc.)
+7- Mobile friendly design
+8- Contact Us form as in https://husnu.net/adrian3/
+
+9- Users
+	Hierarchy: 
+		a.	Visitor (not registered)
+		b.	Registered, logged in user
+		c.	Member (member of any user group)
+		d.	Group admin (admin of any group)
+		( Approves member and member roles in the group )
+
+	Roles:
+		Business owner   (PM_IT assigns this role)
+		PM_business (Project manager business) (Business owners assigns this role )
+			Webadmin  (PM_business assigns this role )
+			Content editor   (PM_business assigns this role )
+		PM_IT (Project manager IT) (Business owners assigns this role )
+			Webmaster  (PM_IT assigns this role )
+			Programmer  (PM_IT assigns this role )
+			Deployer  (PM_IT assigns this role )
+
+10- Database API
+	Dependency injection: SecurityCheck class
+	Dedicated user: Database Officer  (credentials are highRisk fields)
+	Registered users, members: Select, edit, update, insert own records only. Cannot see other people’s PII and highRisk fields
+	Webadmin, groupadmin: Strict restrictions to display other people’s PII
+	Nobody sees highRisk fields
+
+11- Reporting
+	Backend Reporting API (Views API):
+		a.	Select from accessible tables
+		b.	Select from accessible columns
+		c.  Filter
+		d.  Search
+	Frontend Javascript class of methods:
+		a.	List, sort search results in front end
+		b.	Export search results as csv file
+
+
+21- Final project:  Marine Corps Games registration only
+	a. Form as in demo https://husnu.net/a3/  ( https://dodwarriorgames.com/ )
+	b. Implement database API: Submit, save, search, report using  
+	c. Implement front end reporting API
+	
+
+
+
+	
+
+	
+
+

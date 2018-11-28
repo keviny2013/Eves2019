@@ -1,0 +1,40 @@
+eVe for developers
+MULTILINGUAL websites 
+
+--------------------------------------------------------
+
+			Translations, internationalization and localization
+
+Translations things to do:
+
+1- Translatables in Backend
+	We will name labels like this:
+			$labels[{featureId}][{label in English}] 
+	 if there is a request $featureId will be requestId. Otherwise $featureId can be 'pageHeader', 'minilogin', 'translationDd' dropdown, 'mainMenu, etc. So, we need to generate labels accordingly. We need to build page and requests accordingly. 
+
+2- Flow of the program:
+    Language drop down in header, next to mini login 
+	User selects a language.  Request goes to eVe.frontController1()
+	
+	eVe.frontController1() checks if response exists in cache or local storage
+	If does not exists: passess request to eVe_sendAjax()
+	 	eVe_sendAjax():
+			sends the request to webserver
+			gets the response
+			passes the response to eVe.frontController1()
+
+	eVe.frontController1() passes response to custom request handler : {requestName}()
+
+	 request handler: 
+		- saves the response in localStorage (if does not exist already)
+		- replaces translatables 
+
+
+3-  Comprehensive translatables:
+		translatables can be labels, texts, data, files, etc. 
+		A possible comprehensive solution would use database table: eVe_translatables table 
+			with columns ( id, type, location, language) 
+				'location' here can be another database table or file
+		
+		For now we will translate only the labels including short helper texts that application uses
+		

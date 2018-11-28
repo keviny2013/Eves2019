@@ -1,1 +1,35 @@
-ToDoList goes here
+ToDoList
+------------------
+
+Plan: 200 hrs
+
+	Review eVe_step1
+1- implement $values	: 4 hrs
+2- implement $labels	: 8 hrs
+3- Review ContactUs 	: 4 hrs
+
+	New
+4- Website registration : 24 hrs	
+	(Email and phone number validation )
+	
+5- Login 				: 24 hrs	
+	( 2 factor authentication )
+
+
+10- Database API		:	24 hrs
+
+11- Reports API backend	: 	8 hrs
+
+
+12- Reports - Front end	: 	24 hrs
+	( Basic front end actions on listed data (HTML table) )
+
+20- Games registration only	: 	16 hrs
+	( as in husnu.net/a3  )
+	
+
+Spare hours		:	40 hrs
+
+
+
+
